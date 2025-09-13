@@ -3,6 +3,7 @@
 /hospital/hms/admin/vendor/
 /hospital/hms/doctor/vendor/
 
+
 # Sass cache
 /hospital/assets/.sass-cache/
 *.s[ac]ss.cache
