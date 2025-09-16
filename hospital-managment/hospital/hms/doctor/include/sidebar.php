@@ -80,7 +80,7 @@
 											<i class="ti-calendar"></i>
 										</div>
 										<div class="item-inner">
-											<span class="title"> Leave Management </span>
+											<span class="title"> Apply Leave </span>
 										</div>
 									</div>
 								</a>

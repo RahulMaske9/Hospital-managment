@@ -236,7 +236,7 @@
 											<i class="ti-calendar"></i>
 										</div>
 										<div class="item-inner">
-											<span class="title"> Leave Management </span>
+											<span class="title"> Leave Requests </span>
 										</div>
 									</div>
 								</a>

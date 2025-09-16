@@ -6,49 +6,36 @@ if (isset($_POST['submit'])) {
     $uname = $_POST['username'];
     $password = $_POST['password'];
 
-    // Using prepared statements to prevent SQL injection
-    $stmt = $con->prepare("SELECT id, password FROM doctors WHERE docEmail=?");
-    $stmt->bind_param("s", $uname);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $hashed_password);
-        $stmt->fetch();
-
-        // Verifying password
-        if (password_verify($password, $hashed_password)) {
-            $_SESSION['dlogin'] = $uname;
-            $_SESSION['id'] = $id;
-            $uid = $id;
-            $uip = $_SERVER['REMOTE_ADDR'];
-            $status = 1;
-
-            // Logging the successful login
-            $log_stmt = $con->prepare("INSERT INTO doctorslog(uid, username, userip, status) VALUES (?, ?, ?, ?)");
-            $log_stmt->bind_param("issi", $uid, $uname, $uip, $status);
-            $log_stmt->execute();
-            $log_stmt->close();
-
+    $ret=mysqli_query($con,"SELECT * FROM doctors WHERE docEmail='$uname'");
+    $num=mysqli_fetch_array($ret);
+    if($num>0)
+    {
+        if (md5($_POST['password'])==$num['password'])
+        {
+            $_SESSION['dlogin']=$_POST['username'];
+            $_SESSION['id']=$num['id'];
+            $uid=$num['id'];
+            $uip=$_SERVER['REMOTE_ADDR'];
+            $status=1;
+            $log=mysqli_query($con,"insert into doctorslog(uid,username,userip,status) values('$uid','".$_SESSION['dlogin']."','$uip','$status')");
             header("location:dashboard.php");
             exit();
-        } else {
-            // Invalid password
-            $uip = $_SERVER['REMOTE_ADDR'];
-            $status = 0;
-            $log_stmt = $con->prepare("INSERT INTO doctorslog(username, userip, status) VALUES (?, ?, ?)");
-            $log_stmt->bind_param("ssi", $uname, $uip, $status);
-            $log_stmt->execute();
-            $log_stmt->close();
-
-            $_SESSION['errmsg'] = "Invalid username or password";
         }
-    } else {
-        // Invalid username
-        $_SESSION['errmsg'] = "Invalid username or password";
+        else
+        {
+            $uip=$_SERVER['REMOTE_ADDR'];
+            $status=0;
+            mysqli_query($con,"insert into doctorslog(username,userip,status) values('".$_POST['username']."','$uip','$status')");
+            $_SESSION['errmsg']="Invalid username or password";
+        }
     }
-
-    $stmt->close();
+    else
+    {
+        $uip=$_SERVER['REMOTE_ADDR'];
+        $status=0;
+        mysqli_query($con,"insert into doctorslog(username,userip,status) values('".$_POST['username']."','$uip','$status')");
+        $_SESSION['errmsg']="Invalid username or password";
+    }
 }
 ?>
 
@@ -84,7 +71,7 @@ if (isset($_POST['submit'])) {
 							</legend>
 							<p>
 								Please enter your name and password to log in.<br />
-								<span style="color:red;"><?php echo $_SESSION['errmsg']; ?><?php echo $_SESSION['errmsg']="";?></span>
+								<span style="color:red;"><?php if(!empty($_SESSION['errmsg'])){ echo htmlentities($_SESSION['errmsg']); $_SESSION['errmsg']="";}?></span>
 							</p>
 							<div class="form-group">
 								<span class="input-icon">

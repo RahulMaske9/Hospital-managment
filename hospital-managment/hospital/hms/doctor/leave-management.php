@@ -29,7 +29,7 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Doctor | Leave Management</title>
+		<title>Doctor | Apply Leave</title>
 		
 		<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -60,14 +60,14 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 						<section id="page-title">
 							<div class="row">
 								<div class="col-sm-8">
-									<h1 class="mainTitle">Doctor | Leave Management</h1>
+									<h1 class="mainTitle">Doctor | Apply Leave</h1>
 																	</div>
 								<ol class="breadcrumb">
 									<li>
 										<span>Doctor</span>
 									</li>
 									<li class="active">
-										<span>Leave Management</span>
+										<span>Apply Leave</span>
 									</li>
 								</ol>
 							</div>
